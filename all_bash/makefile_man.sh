@@ -1,0 +1,22 @@
+#!/bin/bash
+
+DEFAULT="\033[0;39m"
+GREEN="\033[0;92m"
+YELLOW="\033[0;93m"
+
+printf "\t\tMan for makefile\n"
+printf "\t\t----------------\n\n"
+printf "Proto function  :  make ${GREEN}*${DEFAULT}\n\n"
+printf "************************************************************************************************************\n"
+printf "* ${GREEN}%-20s${DEFAULT} => ${YELLOW}%-80s${DEFAULT} *\n" "Without params" "Compil all files"
+printf "* ${GREEN}%-20s${DEFAULT} => ${YELLOW}%-80s${DEFAULT} *\n" "global_libft_init" "Init libft.a and gnl.a"
+printf "* ${GREEN}%-20s${DEFAULT} => ${YELLOW}%-80s${DEFAULT} *\n" "clean_libft" "Clean objects files from libft an gnl"
+printf "* ${GREEN}%-20s${DEFAULT} => ${YELLOW}%-80s${DEFAULT} *\n" "fclean_libft" "Clean objects files from libft an gnl and libft.a and gnl.a"
+printf "* ${GREEN}%-20s${DEFAULT} => ${YELLOW}%-80s${DEFAULT} *\n" "re_libft" "Do make fclean_libft and global_libft_init"
+printf "* ${GREEN}%-20s${DEFAULT} => ${YELLOW}%-80s${DEFAULT} *\n" "add_libft" "Add file(s) inside the libft's Makefile"
+printf "* ${GREEN}%-20s${DEFAULT} => ${YELLOW}%-80s${DEFAULT} *\n" "clean" "Clean objects files fro minishell"
+printf "* ${GREEN}%-20s${DEFAULT} => ${YELLOW}%-80s${DEFAULT} *\n" "fclean" "Clean objects files fro minishell and the exec minishell"
+printf "* ${GREEN}%-20s${DEFAULT} => ${YELLOW}%-80s${DEFAULT} *\n" "re" "Do make fclean and make"
+printf "* ${GREEN}%-20s${DEFAULT} => ${YELLOW}%-80s${DEFAULT} *\n" "add" "Add file(s) inside the minishell's Makefile"
+printf "* ${GREEN}%-20s${DEFAULT} => ${YELLOW}%-80s${DEFAULT} *\n" "man" "Print man"
+printf "************************************************************************************************************\n"
