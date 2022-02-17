@@ -21,5 +21,4 @@ re_libft:
 	@make re -C ./global_libft
 
 add_libft:
-	@make add -C ./global_libft/
-	@make -C ./global_libft
+	@make add -C ./global_libft

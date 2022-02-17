@@ -37,10 +37,15 @@ char	*start_prompt(char **env)
 		free(tmp);
 		return (NULL);
 	}
-	output = ft_strjoin(tmp1, "\033[0;39m@\033[0;92mminishell\033[0;39m > ");
+	output = ft_strjoin(tmp1, "\033[0;39m@\033[0;92mminishell\033[0;39m");
 	free(tmp);
+	if (!datas_prompt.last_command_status)
+		tmp = ft_strjoin(output, " \033[0;92m>\033[0;39m ");
+	else
+		tmp = ft_strjoin(output, " \033[0;91m>\033[0;39m ");
+	free(output);
 	free(tmp1);
-	if (!output)
+	if (!tmp)
 		return (NULL);
-	return (output);
+	return (tmp);
 }

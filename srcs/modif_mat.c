@@ -165,6 +165,7 @@ char	**modif_mat(char **cmds, char **envp, t_var_env *out_struct)
 {
 	int	x;
 	int	y;
+	char *tmp;
 
 	x = -1;
 	while (++x < ft_matrixlen(cmds))
@@ -172,8 +173,19 @@ char	**modif_mat(char **cmds, char **envp, t_var_env *out_struct)
 		y = -1;
 		while (++y < (int)ft_strlen(cmds[x]))
 			if (cmds[x][y] == '$')
-				if ((y > 0 && cmds[x][0] == '"') || (y == 0))
+			{
+				if (y <= (int)ft_strlen(cmds[x]) - 1 && cmds[x][y + 1] == '?')
+					cmds[x] = ft_itoa(datas_prompt.last_command_status);
+				else if ((y > 0 && cmds[x][0] == '"') || (y == 0))
 					cmds[x] = return_char(cmds[x], y, envp, out_struct);
+			}
+		if (cmds[x][0] == '"' && cmds[x][ft_strlen(cmds[x]) - 1] == '"')
+		{
+			tmp = ft_calloc(sizeof(char), ft_strlen(cmds[x]) - 1);
+			ft_strlcpy(tmp, &cmds[x][1], ft_strlen(cmds[x]) - 2);
+			free(cmds[x]);
+			cmds[x] = tmp;
+		}
 	}
 	return (cmds);
 }

@@ -42,6 +42,7 @@ SRC += pipe_utils.c
 SRC += manip_env.c
 SRC += here_doc.c
 SRC += builtin_functions.c
+SRC += cd.c
 SRC += echo.c
 SRC += env.c
 SRC += pwd.c

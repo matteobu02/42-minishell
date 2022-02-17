@@ -118,6 +118,7 @@ void	pipe_rec(t_datas_cmd *cmds, char *env[], int pre_fd[2], t_one_cmd *cmd)
 		{
 			close_pipe(pre_fd);
 			waitpid(pid, NULL, 0);
+			find_builtin(datas_prompt.cmds, cmd);
 			if (cmd->next)
 				pipe_rec(cmds, env, next_fd, cmd->next);
 			close_pipe(next_fd);

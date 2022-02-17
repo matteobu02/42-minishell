@@ -33,18 +33,12 @@ t_var_env	*ft_new_var_env(char *str, t_var_env *old_struct)
 
 	out_struct = malloc(sizeof(t_var_env));
 	if (!out_struct)
-	{
-		if (old_struct)
-			ft_new_free(old_struct);
 		return (NULL);
-	}
 	size_word = ft_strchr_up(str, '=');
 	out_struct->name_var = malloc(sizeof(char) * size_word);
 	if (!out_struct->name_var)
 	{
 		free(out_struct);
-		if (old_struct)
-			ft_new_free(old_struct);
 		return (NULL);
 	}
 	ft_strlcpy(out_struct->name_var, str, size_word);
@@ -54,8 +48,6 @@ t_var_env	*ft_new_var_env(char *str, t_var_env *old_struct)
 	{
 		free(out_struct->name_var);
 		free(out_struct);
-		if (old_struct)
-			ft_new_free(old_struct);
 		return (NULL);
 	}
 	ft_strlcpy(out_struct->var_txt, &str[size_word + 1], size_word2);

@@ -18,7 +18,7 @@
 *	Params : La matrice de toute la commande
 *	Retour : La matrice de toute la commande sans |
 *	Descritpion:
-*		Parcourt la matrice en remplace le | par la ligne suivante de la matrice 
+*		Parcourt la matrice en remplace le | par la ligne suivante de la matrice
 *
 ****************************************/
 

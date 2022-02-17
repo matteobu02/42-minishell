@@ -63,7 +63,7 @@ void	ft_end_process(char *cmd_path, char **cmd, char **paths, char **env, t_one_
 	(void)env;
 	if (ft_strncmp(cmd_path, cmd[0], ft_strlen(cmd_path)) == 0)
 		cmd_path = cmd[0];
-	if (find_builtin(datas_prompt.cmds, cmd_struct))
+	if (!check_builtin(cmd_struct))
 		execve(cmd_path, cmd, env);
 	if (access(cmd_path, F_OK) != 0)
 		perror_cnf("command not found: ", cmd[0], 2);
