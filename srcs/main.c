@@ -6,7 +6,7 @@
 /*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 18:14:40 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/17 16:40:02 by mbucci           ###   ########.fr       */
+/*   Updated: 2022/02/17 17:42:17 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	find_builtin(t_datas_cmd *cmds, t_one_cmd *cmd)
 	else if (!ft_strncmp("env", cmd->cmd, 3))
 		env(cmds->datas_prompt->env_in_struct);
 	else if (!ft_strncmp("pwd", cmd->cmd, 3))
-		pwd(cmd);
+		pwd();
 	//else if (!ft_strncmp("export", cmd->cmd, 6))
 		//export(ft_matrixlen(cmd->all_cmd), cmd->all_cmd);
 	else if (!ft_strncmp("unset", cmd->cmd, 5))
