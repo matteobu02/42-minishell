@@ -66,8 +66,8 @@ t_one_cmd	*trans_cmd(char **cmds, t_datas_prompt *datas_prompt, int st, t_one_cm
 	int			x;
 	t_one_cmd	*cmd;
 	t_one_cmd	*tmp;
-	char **envp;
-	t_var_env *out_struct;
+	char 		**envp;
+	t_var_env 	*out_struct;
 
 	envp = datas_prompt->envp;
 	out_struct = datas_prompt->out_struct;

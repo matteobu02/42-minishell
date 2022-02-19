@@ -6,7 +6,7 @@
 /*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 15:12:14 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/17 17:42:42 by mbucci           ###   ########.fr       */
+/*   Updated: 2022/02/18 15:54:46 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # (Version 0.6.2)                                    #\n\
 ######################################################\n"
 
-t_datas_prompt	datas_prompt;
+
 
 void		ft_free_one_cmd(t_one_cmd *first_cmd, int status);
 void		ft_free_datas_cmd(t_datas_cmd *datas_cmd);
@@ -42,10 +42,10 @@ void		child(t_fd fds, char *argv[], char *env[], int fd[2]);
 void		perror_cnf(char *str, char *cmd, int fd);
 void		ft_end_process(char *cmd_path, char **cmd, char **path, char **env, \
 	t_one_cmd *cmd_struct);
-void		process(char *env[], char **cmd, t_one_cmd *cmd_struct);
+void		process(char *env[], char **cmd, t_one_cmd *cmd_struct, int to_exec);
 void 		cd(int ac, char **av);
 void		echo(int ac, char **av);
-void 		env(t_var_env *list);
+void 		env(void);
 void		pwd(void);
 void		unset(int ac, char **av);
 void		ft_exit(void);
@@ -56,7 +56,7 @@ int			ft_strlen_up(char *str, char *search);
 int			infile(char **all_cmd);
 int			outfile(char **all_cmd);
 int			count_cmd(char *argv[]);
-int			find_builtin(t_datas_cmd *cmds, t_one_cmd *cmd);
+int			find_builtin(t_one_cmd *cmd);
 int			check_builtin(t_one_cmd *cmd);
 int			ft_open(t_one_cmd *cmd);
 

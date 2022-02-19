@@ -6,7 +6,7 @@
 /*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 18:14:40 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/17 17:42:17 by mbucci           ###   ########.fr       */
+/*   Updated: 2022/02/18 15:54:23 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,24 +87,26 @@ void	print_test(t_datas_prompt datas_prompt)
 void	init_data_prompt(t_datas_prompt *datas_prompt, char **envp)
 {
 	datas_prompt->envp = ft_matrixlcpy(envp, ft_matrixlen(envp));
+
 	datas_prompt->env_in_struct = conv_env(envp);
 	if (!datas_prompt->env_in_struct)
 		exit(1);
 	datas_prompt->last_command_status = 0;
 	datas_prompt->out_struct = NULL;
+	datas_prompt->old_command = NULL;
 	datas_prompt->cmds = NULL;
 	ft_putstr_fd("\033[2J", 1);
 	ft_putstr_fd(INPUT, 1);
 }
 
-int	find_builtin(t_datas_cmd *cmds, t_one_cmd *cmd)
+int	find_builtin(t_one_cmd *cmd)
 {
 	if (!ft_strncmp("cd", cmd->cmd, 2))
 		cd(ft_matrixlen(cmd->all_cmd), cmd->all_cmd);
 	else if (!ft_strncmp("echo", cmd->cmd, 4))
 		echo(ft_matrixlen(cmd->all_cmd), cmd->all_cmd);
 	else if (!ft_strncmp("env", cmd->cmd, 3))
-		env(cmds->datas_prompt->env_in_struct);
+		env();
 	else if (!ft_strncmp("pwd", cmd->cmd, 3))
 		pwd();
 	//else if (!ft_strncmp("export", cmd->cmd, 6))
@@ -136,7 +138,7 @@ char **conv_env_to_mat(void)
 	t_var_env	*tmp;
 
 	x = ft_lstsize_up(datas_prompt.env_in_struct);
-	out_mat = malloc(sizeof(char *) * x + 1);
+	out_mat = malloc(sizeof(char *) * (x + 1));
 	tmp  = datas_prompt.env_in_struct;
 	out_mat[x] = NULL;
 	while (--x > -1)
@@ -176,23 +178,22 @@ int	main(int argc, char **argv, char **envp)
 			else
 			{
 				datas_prompt.cmds = gen_datas_cmd(test, &datas_prompt);
-				if (!datas_prompt.cmds)
-				{
-					ft_new_free(datas_prompt.env_in_struct);
-					ft_new_free(datas_prompt.out_struct);
-					exit (0);
-				}
+				if (datas_prompt.cmds)
 			//	print_test(datas_prompt);
-				if (datas_prompt.cmds->cmd_first->type_hd == 1)
-					ft_here_doc(datas_prompt.cmds, datas_prompt.cmds->cmd_first->magic_word);
-				pipe_rec(datas_prompt.cmds, envp, fd, datas_prompt.cmds->cmd_first);
-				ft_free_datas_cmd(datas_prompt.cmds);
+				{
+					if (datas_prompt.cmds->cmd_first->type_hd == 1)
+						ft_here_doc(datas_prompt.cmds, datas_prompt.cmds->cmd_first->magic_word);
+					pipe_rec(datas_prompt.cmds, datas_prompt.envp, fd, datas_prompt.cmds->cmd_first);
+					ft_free_datas_cmd(datas_prompt.cmds);
+				}
 			}
 			add_history(test);
 			ft_clean_mat(datas_prompt.envp);
 			datas_prompt.envp = conv_env_to_mat();
 		}
-		free(test);
+		if (datas_prompt.old_command)
+			free(datas_prompt.old_command);
+		datas_prompt.old_command = test;
 		free(prompt);
 	}
 	ft_new_free(datas_prompt.env_in_struct);

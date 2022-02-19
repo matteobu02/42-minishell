@@ -6,7 +6,7 @@
 #    By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/04 16:00:11 by hgoorick          #+#    #+#              #
-#    Updated: 2021/09/06 14:01:48 by hgoorick         ###   ########.fr        #
+#    Updated: 2022/02/19 14:31:56 by mbucci           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 -include datas_makefile/srcs.mk
 
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -g 
 
 all:  global_libft_init creat_dir print ${NAME}
 

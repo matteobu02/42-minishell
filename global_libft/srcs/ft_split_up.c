@@ -47,8 +47,8 @@ static int	len_word(char const *s, int i)
 			status = 1;
 		else if ((s[i + lg_word] == 39) && !status)
 			status = 2;
-		else if (((s[i + lg_word] == 39) && status == 2)
-			|| ((s[i + lg_word] == '"') && status == 1)
+		else if (((s[i + lg_word] == 39) && !((int)ft_strlen(s) > 1 + i + lg_word && s[i + lg_word + 1] == 39) && status == 2)
+			|| ((s[i + lg_word] == '"') && !((int)ft_strlen(s) > 1 + i + lg_word && s[i + lg_word + 1] == '"') && status == 1)
 			|| (!status && (s[i + lg_word] == '|'
 					|| s[i + lg_word] == '>' || s[i + lg_word] == '<')))
 		{
@@ -58,6 +58,8 @@ static int	len_word(char const *s, int i)
 				lg_word += need_line(status, lg_word);
 			break ;
 		}
+		else if (((int)ft_strlen(s) > 1 + i + lg_word && s[i + lg_word + 1] == '"') || ((int)ft_strlen(s) > 1 + i + lg_word && s[i + lg_word + 1] == 39))
+			lg_word+=2;
 		lg_word++;
 	}
 	return (lg_word);

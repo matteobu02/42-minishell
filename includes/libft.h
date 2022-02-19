@@ -15,6 +15,7 @@
 
 # include "struct.h"
 # include "includes.h"
+t_datas_prompt	datas_prompt;
 
 int		find_next_char(char **all_cmds, char c);
 int		ft_isspace(char c);

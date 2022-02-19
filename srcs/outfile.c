@@ -36,10 +36,7 @@ int	open_fd(char *cmd, int stat)
 	else
 		fd = open(cmd, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd <= 0)
-	{
-		write(2, "Wrong filename\n", 15);
 		return (-1);
-	}
 	return (fd);
 }
 
@@ -61,10 +58,7 @@ int	give_me_fd(char **all_cmd, int x)
 		if (all_cmd[x - 1][1] == '>')
 			return (open_fd(all_cmd[x], 1));
 		else
-		{
-			write(2, "Wrong operator\n", 15);
 			return (-1);
-		}
 	}
 	return (open_fd(all_cmd[x], 0));
 }

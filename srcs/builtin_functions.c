@@ -6,7 +6,7 @@
 /*   By: mbucci <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 14:49:11 by mbucci            #+#    #+#             */
-/*   Updated: 2022/02/17 16:39:21 by mbucci           ###   ########.fr       */
+/*   Updated: 2022/02/19 13:57:31 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,6 @@
 #include "minishell.h"
 
 int	ft_list_to_index(char *str, t_var_env *ptr);
-
-int	ft_open(t_one_cmd *cmd)
-{
-	int	fd;
-
-	if (!cmd->type_next)
-		return (1);
-	fd = open("tmp_build", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd == -1)
-		return(0);
-	cmd->infile = fd;
-	return (fd);
-}
 
 /*	EXPORT NAME
  *	if NAME is already a variable it will be added to env
@@ -54,10 +41,38 @@ int	ft_open(t_one_cmd *cmd)
 	}
 }*/
 
+/*void	print_list(void)
+{
+	t_var_env	*ptr;
+
+	ptr = datas_prompt.env_in_struct;
+	while (ptr)
+	{
+		printf("%s=%s\n", ptr->name_var, ptr->var_txt);
+		ptr = ptr->next;
+	}
+}*/
+
+/*void	print_matrix(char **matrix)
+{
+	int	i;
+
+	i = -1;
+	while (matrix[++i])
+		printf("%s\n", matrix[i]);
+}*/
+
+/*int	forbidden_char_in_name(char *s)
+{
+	const char	*
+}*/
+
 void	ft_remove_link(int index, t_var_env *list)
 {
 	t_var_env	*tmp;
 
+	if (!list)
+		return ;
 	while (list && --index > 0)
 		list = list->next;
 	tmp = list->next;
@@ -74,10 +89,15 @@ void	unset(int ac, char **av)
 	int	x;
 
 	if (ac == 1)
+	{
+		datas_prompt.last_command_status = 0;
 		return ;
-	i = 0;
+	}
+	i = -1;
  	while (++i < ac)
 	{
+		//check for forbidden characters
+		//	if forbidden char print error message and keep going
 		x = ft_list_to_index(av[i], datas_prompt.env_in_struct);
 		if (x != -1)
 			ft_remove_link(x, datas_prompt.env_in_struct);
@@ -88,6 +108,9 @@ void	unset(int ac, char **av)
 				ft_remove_link(x, datas_prompt.out_struct);
 		}
 	}
+	ft_clean_mat(datas_prompt.envp);
+	datas_prompt.envp = conv_env_to_mat();
+	datas_prompt.last_command_status = 0;
 }
 
 void	ft_exit(void)

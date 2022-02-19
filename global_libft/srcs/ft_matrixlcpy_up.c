@@ -26,7 +26,7 @@ char	**ft_matrixlcpy(char **matrix_in, int nb_line)
 		matrix_return[x] = malloc(sizeof(char) * ft_strlen(matrix_in[x]) + 1);
 		if (!matrix_return[x])
 			return (NULL);
-		ft_strlcpy(matrix_return[x], matrix_in[x], ft_strlen(matrix_in[x]));
+		ft_strlcpy(matrix_return[x], matrix_in[x], ft_strlen(matrix_in[x]) + 1);
 	}
 	matrix_return[x] = NULL;
 	return (matrix_return);

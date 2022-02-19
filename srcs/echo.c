@@ -31,7 +31,11 @@ void	echo(int ac, char **av)
 		else
 			flag = 0;
 		while (++i < ac)
+		{
+			if (i > 1)
+				printf(" ");
 			printf("%s", av[i]);
+		}
 		if (!flag)
 			printf("\n");
 	}

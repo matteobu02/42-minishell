@@ -32,10 +32,7 @@ int	open_fd_infile(char *cmd)
 	str = NULL;
 	fd = open(cmd, O_RDONLY);
 	if (fd <= 0)
-	{
-		write(2, "Wrong filename\n", 15);
 		return (-1);
-	}
 	return (fd);
 }
 
@@ -57,10 +54,7 @@ int	give_me_fd_infile(char **all_cmd, int x)
 		if (all_cmd[x - 1][1] == '<')
 			return (0);
 		else
-		{
-			write(2, "Wrong operator\n", 15);
 			return (-1);
-		}
 	}
 	return (open_fd_infile(all_cmd[x]));
 }

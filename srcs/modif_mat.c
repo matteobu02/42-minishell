@@ -165,22 +165,80 @@ char	**modif_mat(char **cmds, char **envp, t_var_env *out_struct)
 {
 	int	x;
 	int	y;
+	int stat;
 	char *tmp;
+	char *tmp1;
 
 	x = -1;
 	while (++x < ft_matrixlen(cmds))
 	{
 		y = -1;
 		while (++y < (int)ft_strlen(cmds[x]))
+		{
 			if (cmds[x][y] == '$')
 			{
 				if (y <= (int)ft_strlen(cmds[x]) - 1 && cmds[x][y + 1] == '?')
-					cmds[x] = ft_itoa(datas_prompt.last_command_status);
+				{
+					tmp1 = ft_itoa(datas_prompt.last_command_status);
+					tmp = ft_calloc(ft_strlen(cmds[x]) - 2 + ft_strlen(tmp1), sizeof(char));
+					ft_strlcpy(tmp, cmds[x], y);
+					ft_strlcpy(&tmp[y], tmp1, ft_strlen(tmp1) + 1);
+					ft_strlcpy(&tmp[y + ft_strlen(tmp1)], &cmds[x][y + 2], ft_strlen(&cmds[x][y + 2]) + 1);
+					free(cmds[x]);
+					cmds[x] = tmp;
+				}
+
 				else if ((y > 0 && cmds[x][0] == '"') || (y == 0))
 					cmds[x] = return_char(cmds[x], y, envp, out_struct);
 			}
-		if (cmds[x][0] == '"' && cmds[x][ft_strlen(cmds[x]) - 1] == '"')
+			else if (cmds[x][y] == '!' && ft_strlen(&cmds[x][y]) >= 2 && cmds[x][y + 1] == '!')
+			{
+				tmp1 = datas_prompt.old_command;
+				tmp = ft_calloc(ft_strlen(cmds[x]) - 2 + ft_strlen(tmp1), sizeof(char));
+				ft_strlcpy(tmp, cmds[x], y);
+				ft_strlcpy(&tmp[y], tmp1, ft_strlen(tmp1) + 1);
+				ft_strlcpy(&tmp[y + ft_strlen(tmp1)], &cmds[x][y + 2], ft_strlen(&cmds[x][y + 2]) + 1);
+				free(cmds[x]);
+				cmds[x] = tmp;
+			}
+		}
+		if ((cmds[x][0] == '"' && cmds[x][ft_strlen(cmds[x]) - 1] == '"') || (cmds[x][0] == '\'' && cmds[x][ft_strlen(cmds[x]) - 1] == '\''))
 		{
+			if (cmds[x][0] == '"' && cmds[x][ft_strlen(cmds[x]) - 1] == '"')
+			{
+				stat = ft_strchr_up(&cmds[x][1], '"') + 1;
+				while (stat < (int)ft_strlen(cmds[x]) - 1)
+				{
+					stat = ft_strchr_up(&cmds[x][stat], '"') + stat;
+					if (stat != (int)ft_strlen(cmds[x]) - 1)
+					{
+						tmp = ft_calloc(sizeof(char), ft_strlen(cmds[x]) - 1);
+						ft_strlcpy(tmp, &cmds[x][0], ft_strchr_up(&cmds[x][1], '"') + 1);
+						ft_strlcpy(&tmp[ft_strchr_up(&cmds[x][1], '"') + 1], &cmds[x][ft_strchr_up(&cmds[x][1], '"') + 3], ft_strlen(cmds[x]) - stat);
+						free(cmds[x]);
+						cmds[x] = tmp;
+					}
+					stat = ft_strchr_up(&cmds[x][stat], '"') + stat;
+				}
+			}
+			else if (cmds[x][0] == 39 && cmds[x][ft_strlen(cmds[x]) - 1] == 39)
+			{
+				stat = ft_strchr_up(&cmds[x][1], 39) + 1;
+				while (stat < (int)ft_strlen(cmds[x]) - 1)
+				{
+					stat = ft_strchr_up(&cmds[x][stat], 39) + stat;
+					if (stat != (int)ft_strlen(cmds[x]) - 1)
+					{
+						tmp = ft_calloc(sizeof(char), ft_strlen(cmds[x]) - 1);
+						ft_strlcpy(tmp, &cmds[x][0], ft_strchr_up(&cmds[x][1], 39) + 1);
+						ft_strlcpy(&tmp[ft_strchr_up(&cmds[x][1], 39) + 1], &cmds[x][ft_strchr_up(&cmds[x][1], 39) + 3], ft_strlen(cmds[x]) - stat);
+						free(cmds[x]);
+						cmds[x] = tmp;
+					}
+					stat = ft_strchr_up(&cmds[x][stat], 39) + stat;
+				}
+
+			}
 			tmp = ft_calloc(sizeof(char), ft_strlen(cmds[x]) - 1);
 			ft_strlcpy(tmp, &cmds[x][1], ft_strlen(cmds[x]) - 2);
 			free(cmds[x]);

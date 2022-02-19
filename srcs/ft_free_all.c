@@ -92,8 +92,6 @@ void	ft_free_datas_cmd(t_datas_cmd *datas_cmd)
 {
 	int	x;
 
-	if (datas_cmd->full_path)
-		free(datas_cmd->full_path);
 	if (datas_cmd->all_cmds)
 	{
 		x = ft_matrixlen(datas_cmd->all_cmds);

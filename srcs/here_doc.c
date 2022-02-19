@@ -46,7 +46,8 @@ void	ft_here_doc(t_datas_cmd *cmds, char *end_word)
 	{
 		write(1, "heredoc>", 8);
 		here_doc = get_next_line(0);
-		if (here_doc && !ft_strncmp(here_doc, end_word, ft_strlen(end_word)))
+		if (here_doc && !ft_strncmp(here_doc, end_word, ft_strlen(end_word)) &&
+			(ft_strlen(end_word) == ft_strlen(here_doc) - 1))
 			break ;
 		join = ft_strjoin_up(join, here_doc);
 		free(here_doc);

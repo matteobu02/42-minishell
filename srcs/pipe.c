@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbuccher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 16:51:00 by lbuccher          #+#    #+#             */
-/*   Updated: 2022/01/12 17:08:52 by lbuccher         ###   ########.fr       */
+/*   Updated: 2022/02/18 15:56:10 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	process(char *env[], char **cmd, t_one_cmd *cmd_struct)
+void	process(char *env[], char **cmd, t_one_cmd *cmd_struct, int to_exec)
 {
 	int		i;
 	char	*tmp;
@@ -20,6 +20,15 @@ void	process(char *env[], char **cmd, t_one_cmd *cmd_struct)
 
 	i = -1;
 	paths = get_path(env);
+	if (!paths)
+	{
+		if (!check_builtin(cmd_struct))
+		{
+			perror_cnf("command not found: ", cmd[0], 2);
+			datas_prompt.last_command_status = 127;
+		}
+		return ;
+	}
 	while (paths[++i])
 	{
 		cmd_path = ft_strjoin(paths[i], "/");
@@ -33,7 +42,15 @@ void	process(char *env[], char **cmd, t_one_cmd *cmd_struct)
 		if (paths[i + 1])
 			free(cmd_path);
 	}
-	ft_end_process(cmd_path, cmd, paths, env, cmd_struct);
+	if (to_exec)
+		ft_end_process(cmd_path, cmd, paths, env, cmd_struct);
+	else
+	{
+		if (access(cmd_path, F_OK) != 0 && !check_builtin(cmd_struct))
+			datas_prompt.last_command_status = 127;
+		else if (!cmd_struct->next && (access(cmd_path, F_OK) == 0))
+			datas_prompt.last_command_status = 0;
+	}
 }
 
 void	ft_redirection(int fd_in, int fd_out, int simple, int first)
@@ -88,13 +105,26 @@ void	multi_pipe(t_datas_cmd *cmds, int n_fd[2], int pr_fd[2], t_one_cmd *cmd)
 	}
 }
 
-// fonction pour norme pipe rec
+void	minishell_cmd(char **env, t_one_cmd *cmd)
+{
+	char **cmd_shell;
 
-void	pipe_rec(t_datas_cmd *cmds, char *env[], int pre_fd[2], t_one_cmd *cmd)
+	cmd_shell = malloc(2 * sizeof(char *));
+	cmd_shell[0] = cmd->cmd;
+	cmd_shell[1] = "\n";
+	execve(*cmd_shell, cmd_shell, env);
+	free(cmd_shell[0]);
+	free(cmd_shell[1]);
+	free(cmd_shell);
+}
+
+void	pipe_rec(t_datas_cmd *cmds, char **env, int pre_fd[2], t_one_cmd *cmd)
 {
 	int		next_fd[2];
 	pid_t	pid;
 
+//	if (!ft_strncmp("./", cmd->cmd, 2)) // doit etre lancer dans les dans les cmd
+//		minishell_cmd(env, cmd);
 	if (!ft_strlen(cmd->cmd) || ft_strncmp("exit", cmd->cmd, \
 		ft_strlen(cmd->cmd)))
 	{
@@ -112,15 +142,23 @@ void	pipe_rec(t_datas_cmd *cmds, char *env[], int pre_fd[2], t_one_cmd *cmd)
 			}
 			else
 				multi_pipe(cmds, next_fd, pre_fd, cmd);
-			process(env, cmd->all_cmd, cmd);
+			if (!check_builtin(cmd))
+				process(env, cmd->all_cmd, cmd, 1);
+			else
+			{
+				process(env, cmd->all_cmd, cmd, 0);
+				exit(0);
+			}
 		}
 		else
 		{
 			close_pipe(pre_fd);
 			waitpid(pid, NULL, 0);
-			find_builtin(datas_prompt.cmds, cmd);
+			find_builtin(cmd);
 			if (cmd->next)
 				pipe_rec(cmds, env, next_fd, cmd->next);
+			else
+				process(env, cmd->all_cmd, cmd, 0);
 			close_pipe(next_fd);
 		}
 	}
