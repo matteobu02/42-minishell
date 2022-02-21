@@ -91,8 +91,6 @@ int	outfile(char **all_cmd)
 			break ;
 		else if (fd > 1)
 			close(fd);
-		if (x == ft_matrixlen(all_cmd) - 1 || !x)
-			return (-1);
 		x++;
 		fd = give_me_fd(all_cmd, x);
 		if (fd == -1)

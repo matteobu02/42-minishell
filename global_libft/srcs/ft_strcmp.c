@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd_utils.c                                         :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbucci <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/19 14:09:52 by mbucci            #+#    #+#             */
-/*   Updated: 2022/02/21 14:33:34 by mbucci           ###   ########.fr       */
+/*   Created: 2022/02/21 16:27:41 by mbucci            #+#    #+#             */
+/*   Updated: 2022/02/21 16:30:40 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_var_env	*ft_find_in_list(char *str, t_var_env *list)
+int	ft_strcmp(char *s1, char *s2)
 {
-	if (!str || !list)
-		return (NULL);
-	while (list && ft_strncmp(str, list->name_var, ft_strlen(str)))
-		list = list->next;
-	return (list);
+	int	i;
+
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
 }

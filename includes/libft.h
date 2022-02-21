@@ -6,7 +6,7 @@
 /*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 15:59:57 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/11 15:12:06 by hgoorick         ###   ########.fr       */
+/*   Updated: 2022/02/21 16:51:49 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int		ft_tolower(int c);
 int		ft_toupper(int c);
 int		ft_memcmp(const void *string1, const void *string2, size_t size);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strcmp(char *s1, char *s2);
 
 char	*get_next_line(int fd);
 char	*ft_strchr(const char *str, int to_find);

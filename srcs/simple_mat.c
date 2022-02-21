@@ -95,6 +95,46 @@ void	ft_clean_mat(char **mat)
 *
 ****************************************/
 
+char	*other_cpy(char **final_mat, char **start_mat, int x)
+{
+	char	*out;
+
+	out = cpy_with_malloc(start_mat[x]);
+	if (!out)
+	{
+		ft_clean_mat(final_mat);
+		ft_clean_mat(start_mat);
+		return (NULL);
+	}
+	return (out);
+}
+
+char	**simple_mat2(char **final_mat, char **start_mat, int y, int x)
+{
+	while (++x < ft_matrixlen(start_mat))
+	{
+		if (x < ft_matrixlen(start_mat))
+		{
+			if (start_mat[x][0] == '<' || start_mat[x][0] == '>')
+				x++;
+			else
+			{
+				final_mat[++y] = other_cpy(final_mat, start_mat, x);
+				if (!final_mat[y])
+					return (NULL);
+			}
+		}
+		else
+		{
+			final_mat[++y] = other_cpy(final_mat, start_mat, x);
+			if (!final_mat[y])
+				return (NULL);
+		}
+	}
+	final_mat[++y] = NULL;
+	return (final_mat);
+}
+
 char	**simple_mat(char **start_mat)
 {
 	char	**final_mat;
@@ -104,40 +144,10 @@ char	**simple_mat(char **start_mat)
 	final_mat = malloc(sizeof(char *) * ft_matrixlen(start_mat) - \
 		((nb_erase(start_mat, '>') + nb_erase(start_mat, '<')) * 2) + 1);
 	if (!final_mat)
-		return (NULL); //free all
+		return (NULL);
 	x = -1;
 	y = -1;
-	while (++x < ft_matrixlen(start_mat))
-	{
-		if (x < ft_matrixlen(start_mat))
-		{
-			if (start_mat[x][0] == '<' || start_mat[x][0] == '>')
-				x++;
-			else
-			{
-				final_mat[++y] = cpy_with_malloc(start_mat[x]);
-				if (!final_mat[y])
-				{
-					ft_clean_mat(final_mat);
-					ft_clean_mat(start_mat);
-					return (NULL);
-				}
-			}
-
-		}
-		else
-		{
-			final_mat[++y] = cpy_with_malloc(start_mat[x]);
-			if (!final_mat[y])
-			{
-				ft_clean_mat(final_mat);
-				ft_clean_mat(start_mat);
-				return (NULL);
-			}
-		}
-
-	}
-	final_mat[++y] = NULL;
+	final_mat = simple_mat2(final_mat, start_mat, y, x);
 	ft_clean_mat(start_mat);
 	return (final_mat);
 }

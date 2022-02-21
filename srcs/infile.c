@@ -83,7 +83,8 @@ int	infile(char **all_cmd)
 		if (fd > 1)
 			all_cmd = &all_cmd[x];
 		x = find_next_char(all_cmd, '<');
-		if (x == ft_matrixlen(all_cmd) || (ft_strlen(all_cmd[x]) == 2 && all_cmd[x][1] == '<'))
+		if (x == ft_matrixlen(all_cmd) || (ft_strlen(all_cmd[x]) == 2
+				&& all_cmd[x][1] == '<'))
 			break ;
 		else if (fd > 1)
 			close(fd);

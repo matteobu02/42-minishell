@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+t_var_env	*ft_clean_no_place(t_var_env *out_struct)
+{
+	free(out_struct->name_var);
+	free(out_struct);
+	return (NULL);
+}
+
 /****************************************
 *
 *	Nom : ft_new_var_env
@@ -45,11 +52,7 @@ t_var_env	*ft_new_var_env(char *str, t_var_env *old_struct)
 	size_word2 = ft_strlen(str) - size_word;
 	out_struct->var_txt = malloc(sizeof(char) * size_word2);
 	if (!out_struct->var_txt)
-	{
-		free(out_struct->name_var);
-		free(out_struct);
-		return (NULL);
-	}
+		return (ft_clean_no_place(out_struct));
 	ft_strlcpy(out_struct->var_txt, &str[size_word + 1], size_word2);
 	out_struct->next = old_struct;
 	return (out_struct);
@@ -78,7 +81,7 @@ t_var_env	*conv_env(char **envp)
 		if (!out_struct)
 		{
 			out_struct = NULL;
-			break;
+			break ;
 		}
 	}
 	return (out_struct);

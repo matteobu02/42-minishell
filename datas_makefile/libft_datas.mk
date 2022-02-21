@@ -53,6 +53,7 @@ SRC += ft_calloc.c
 SRC += ft_memchr.c
 SRC += ft_memcmp.c
 SRC += ft_strnstr.c
+SRC += ft_strcmp.c
 SRC += ft_strncmp.c
 SRC += ft_putchar_fd.c
 SRC += ft_striteri.c

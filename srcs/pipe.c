@@ -55,13 +55,31 @@ void	process(char *env[], char **cmd, t_one_cmd *cmd_struct, int to_exec)
 	{
 		if (access(cmd_path, F_OK) != 0 && !check_builtin(cmd_struct))
 			datas_prompt.last_command_status = 127;
-		else if (!cmd_struct->next && (access(cmd_path, F_OK) == 0))
-			datas_prompt.last_command_status = 0;
+		//else if (!cmd_struct->next && (access(cmd_path, F_OK) == 0))
+		//	datas_prompt.last_command_status = 0;
 	}
 }
 
-void	ft_redirection(int fd_in, int fd_out, int simple, int first)
+void	ft_redirection(int fd_in, int fd_out, int simple, int first, t_one_cmd *cmd)
 {
+/*(void)simple;
+	(void)first;
+	if (cmd->type_next == 0 && datas_prompt.cmds->nb_cmds)
+	{
+		if (dup2(fd_out, 1) < 0)
+			return (perror("fd"));
+		write(fd_out, "Here\n", 3);
+	}
+	if (cmd->next)
+	{
+		if (dup2(fd_in, 0) < 0)
+			return (perror("fd"));
+		write(fd_in, "There\n", 3);
+	}
+	close(fd_out);
+	close(fd_in);*/
+
+	(void)cmd;
 	if (simple == 1 && first == 1)
 	{
 		close(fd_in);
@@ -90,24 +108,24 @@ void	multi_pipe(t_datas_cmd *cmds, int n_fd[2], int pr_fd[2], t_one_cmd *cmd)
 	if (cmd->type_next == 2)
 	{
 		if (cmd->infile == 0)
-			ft_redirection(n_fd[0], n_fd[1], 1, 1);
+			ft_redirection(n_fd[0], n_fd[1], 1, 1, cmd);
 		else
-			ft_redirection(cmd->infile, n_fd[1], 0, 1);
+			ft_redirection(cmd->infile, n_fd[1], 0, 1, cmd);
 	}
 	else if (cmds->nb_cmds > 1 && cmd->type_next != 0)
 	{
 		close(pr_fd[1]);
 		close(n_fd[0]);
-		ft_redirection(pr_fd[0], n_fd[1], 0, 0);
+		ft_redirection(pr_fd[0], n_fd[1], 0, 0, cmd);
 	}
 	else if (cmds->nb_cmds > 1 && cmd->type_next == 0)
 	{
 		if (cmd->outfile == 1)
-			ft_redirection(pr_fd[0], pr_fd[1], 1, 0);
+			ft_redirection(pr_fd[0], pr_fd[1], 1, 0, cmd);
 		else
 		{
 			close(pr_fd[1]);
-			ft_redirection(pr_fd[0], cmd->outfile, 0, 0);
+			ft_redirection(pr_fd[0], cmd->outfile, 0, 0, cmd);
 		}
 	}
 }
@@ -153,6 +171,7 @@ void	pipe_rec(t_datas_cmd *cmds, char **env, int pre_fd[2], t_one_cmd *cmd)
 				process(env, cmd->all_cmd, cmd, 1);
 			else
 			{
+				find_builtin(cmd);
 				process(env, cmd->all_cmd, cmd, 0);
 				exit(0);
 			}
@@ -161,11 +180,7 @@ void	pipe_rec(t_datas_cmd *cmds, char **env, int pre_fd[2], t_one_cmd *cmd)
 		{
 			close_pipe(pre_fd);
 			waitpid(pid, NULL, 0);
-			//find_builtin(cmd);
-			//ne fonction pas de cette maniere
-			if (find_builtin(cmd) && cmds->nb_cmds == 1)
-				if (dup2(cmd->outfile, 1) < 0 || dup2(cmd->infile, 0) < 0)
-					return (perror("one cmd: fd"));
+			find_builtin_env(cmd);
 			if (cmd->next)
 				pipe_rec(cmds, env, next_fd, cmd->next);
 			else

@@ -58,7 +58,7 @@ static int	len_word(char const *s, int i)
 				lg_word += need_line(status, lg_word);
 			break ;
 		}
-		else if (((int)ft_strlen(s) > 1 + i + lg_word && s[i + lg_word + 1] == '"') || ((int)ft_strlen(s) > 1 + i + lg_word && s[i + lg_word + 1] == 39))
+		if (((int)ft_strlen(s) > 1 + i + lg_word && s[i + lg_word] == '"' && s[i + lg_word + 1] == '"') || ((int)ft_strlen(s) > 1 + i + lg_word && s[i + lg_word] == 39 && s[i + lg_word + 1] == 39))
 			lg_word+=2;
 		lg_word++;
 	}

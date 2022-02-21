@@ -6,7 +6,7 @@
 /*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 15:12:14 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/18 15:54:46 by mbucci           ###   ########.fr       */
+/*   Updated: 2022/02/21 15:23:52 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int			infile(char **all_cmd);
 int			outfile(char **all_cmd);
 int			count_cmd(char *argv[]);
 int			find_builtin(t_one_cmd *cmd);
+int			find_builtin_env(t_one_cmd *cmd);
 int			check_builtin(t_one_cmd *cmd);
 int			ft_open(t_one_cmd *cmd);
 

@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-
-
 /****************************************
 *
 *	Nom : trans_cmd
@@ -33,43 +31,33 @@
 *
 ****************************************/
 
-t_one_cmd	*trans_cmd(char **cmds, t_datas_cmd	*data_command, int st, t_one_cmd *old_one)
+t_one_cmd	*trans_cmd(char **cmds, t_datas_cmd *datas, int st, t_one_cmd *old)
 {
 	int			x;
 	t_one_cmd	*cmd;
-	t_one_cmd	*tmp;
-	char 		**envp;
-	t_var_env 	*out_struct;
+	char		**envp;
+	t_var_env	*out_struct;
 
+	(void)old;
 	envp = datas_prompt.envp;
 	out_struct = datas_prompt.out_struct;
-	cmds = pipen_t(cmds);
 	cmd = malloc(sizeof(t_one_cmd));
 	if (!cmd)
-		return(NULL);
+		return (NULL);
 	cmd->all_cmd = ft_matrixlcpy(cmds, find_next_char(cmds, '|'));
 	if (!cmd->all_cmd)
 		free(cmd);
 	cmd->all_cmd = modif_mat(cmd->all_cmd, envp, out_struct);
 	if (!cmd->all_cmd)
 		free(cmd);
-	if (old_one && infile(cmd->all_cmd) == 0)
-		cmd->infile = old_one->infile;
-	else
-		cmd->infile = infile(cmd->all_cmd);
-	if (old_one && outfile(cmd->all_cmd) == 1)
-		cmd->outfile = old_one->outfile;
-	else
-		cmd->outfile = outfile(cmd->all_cmd);
-	if (cmd->outfile == -1 || cmd->infile == -1)
-	{
-		ft_free_one_cmd(cmd, 0);
-		return (NULL);
-	}
+	cmd->infile = infile(cmd->all_cmd);
+	cmd->outfile = outfile(cmd->all_cmd);
 	if (cmd == NULL)
 		return (NULL);
-	//on s'est arrete la
-	if (data_command->type_hd || ((cmd->infile != 0 || cmd->outfile != 1) && (find_next_char(cmd->all_cmd, '<') < find_next_char(cmds, '|') || find_next_char(cmd->all_cmd, '>') < find_next_char(cmds, '|'))))
+	if (datas->type_hd || ((cmd->infile != 0 || cmd->outfile != 1)
+			&& (find_next_char(cmd->all_cmd, '<') < find_next_char(cmds, '|')
+				|| find_next_char(cmd->all_cmd, '>') < \
+					find_next_char(cmds, '|'))))
 	{
 		cmd->all_cmd = simple_mat(cmd->all_cmd);
 		if (!cmd->all_cmd)
@@ -79,24 +67,15 @@ t_one_cmd	*trans_cmd(char **cmds, t_datas_cmd	*data_command, int st, t_one_cmd *
 		}
 	}
 	x = find_next_char(cmds, '|');
-	if (!ft_matrixlen(cmd->all_cmd) && 	x != ft_matrixlen(cmds))
+	cmd->cmd = cmd->all_cmd[0];
+	cmd->type_next = 0;
+	cmd->next = NULL;
+	if (x != ft_matrixlen(cmds))
 	{
-		tmp = trans_cmd(&(cmds[x + 1]), data_command, 0, cmd);
-		ft_free_one_cmd(cmd, 1);
-		cmd = tmp;
-	}
-	else
-	{
-		cmd->cmd = cmd->all_cmd[0];
-		cmd->type_next = 0;
-		cmd->next = NULL;
-		if (x != ft_matrixlen(cmds))
-		{
-			cmd->type_next = 2;
-			if (st)
-				cmd->type_next = 1;
-			cmd->next = trans_cmd(&(cmds[x + 1]), data_command, 1, NULL);
-		}
+		cmd->type_next = 2;
+		if (st)
+			cmd->type_next = 1;
+		cmd->next = trans_cmd(&(cmds[x + 1]), datas, 1, NULL);
 	}
 	return (cmd);
 }
