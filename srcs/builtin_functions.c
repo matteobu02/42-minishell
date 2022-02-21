@@ -6,14 +6,14 @@
 /*   By: mbucci <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 14:49:11 by mbucci            #+#    #+#             */
-/*   Updated: 2022/02/19 13:57:31 by mbucci           ###   ########.fr       */
+/*   Updated: 2022/02/21 14:37:54 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include "minishell.h"
 
-int	ft_list_to_index(char *str, t_var_env *ptr);
+t_var_env	*ft_find_in_list(char *str, t_var_env *list);
 
 /*	EXPORT NAME
  *	if NAME is already a variable it will be added to env
@@ -67,13 +67,13 @@ int	ft_list_to_index(char *str, t_var_env *ptr);
 	const char	*
 }*/
 
-void	ft_remove_link(int index, t_var_env *list)
+void	ft_remove_link(t_var_env *target, t_var_env *list)
 {
 	t_var_env	*tmp;
 
-	if (!list)
+	if (!list || !target)
 		return ;
-	while (list && --index > 0)
+	while (list && list != target && list->next != target)
 		list = list->next;
 	tmp = list->next;
 	list->next = list->next->next;
@@ -85,8 +85,8 @@ void	ft_remove_link(int index, t_var_env *list)
 
 void	unset(int ac, char **av)
 {
-	int	i;
-	int	x;
+	int			i;
+	t_var_env	*ptr;
 
 	if (ac == 1)
 	{
@@ -98,14 +98,14 @@ void	unset(int ac, char **av)
 	{
 		//check for forbidden characters
 		//	if forbidden char print error message and keep going
-		x = ft_list_to_index(av[i], datas_prompt.env_in_struct);
-		if (x != -1)
-			ft_remove_link(x, datas_prompt.env_in_struct);
+		ptr = ft_find_in_list(av[i], datas_prompt.env_in_struct);
+		if (!ptr)
+			ft_remove_link(ptr, datas_prompt.env_in_struct);
 		else
 		{
-			x = ft_list_to_index(av[i], datas_prompt.out_struct);
-			if (x != -1)
-				ft_remove_link(x, datas_prompt.out_struct);
+			ptr = ft_find_in_list(av[i], datas_prompt.out_struct);
+			if (!ptr)
+				ft_remove_link(ptr, datas_prompt.out_struct);
 		}
 	}
 	ft_clean_mat(datas_prompt.envp);

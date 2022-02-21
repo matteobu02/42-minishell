@@ -75,8 +75,7 @@ char		**conv_env_to_mat(void);
 t_datas_cmd	*gen_datas_cmd(char *x, t_datas_prompt *datas_prompt);
 t_datas_cmd	*ft_parsing(char *cmd_one_line, t_datas_prompt *datas_prompt);
 
-t_one_cmd	*trans_cmd(char **cmds, t_datas_prompt *datas_prompt, int st, \
-	t_one_cmd *old_one);
+t_one_cmd	*trans_cmd(char **cmds, t_datas_cmd	*data_command, int st, t_one_cmd *old_one);
 
 t_var_env	*conv_env(char **envp);
 t_var_env	*ft_new_var_env(char *str, t_var_env *old_struct);

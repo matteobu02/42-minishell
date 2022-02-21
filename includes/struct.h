@@ -34,6 +34,8 @@ struct s_datas_cmd
 {
 	char			**all_cmds;
 	int				nb_cmds;
+	int 		type_hd;
+	char 		**magic_word;
 	t_one_cmd		*cmd_first;
 	t_datas_prompt	*datas_prompt;
 };
@@ -52,8 +54,6 @@ struct s_one_cmd
 	int			infile;
 	int			outfile;
 	int			type_next;
-    int 		type_hd;
-    char 		*magic_word;
 	t_one_cmd	*next;
 	int 		fd;
 };

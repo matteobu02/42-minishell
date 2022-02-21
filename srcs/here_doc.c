@@ -22,7 +22,7 @@ void	ft_here_doc2(t_datas_cmd *cmds, char *here_doc, char *join, int here_fd)
 	here_fd = open("tmp", O_RDONLY, 0644);
 	free(here_doc);
 	free(join);
-	if (cmds->nb_cmds == 1 && cmds->cmd_first->cmd)
+	if (cmds->nb_cmds && cmds->cmd_first->cmd)
 		cmds->cmd_first->infile = here_fd;
 	else
 	{

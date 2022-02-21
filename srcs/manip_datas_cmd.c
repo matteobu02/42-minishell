@@ -63,7 +63,49 @@ int check_map(char **map)
 	return (0);
 }
 
+void search_hd(t_datas_cmd *cmd)
+{
+	int x;
+	int y;
+	int k;
+	char **tmp;
 
+	x = find_next_char(cmd->all_cmds, '<');
+	cmd->type_hd = 0;
+	cmd->magic_word = NULL;
+	while (x < ft_matrixlen(cmd->all_cmds))
+	{
+		if (ft_matrixlen(&cmd->all_cmds[x]) >= 2 && ft_strlen(cmd->all_cmds[x]) == 2)
+		{
+			if (cmd->all_cmds[x][1] == '<')
+			{
+				cmd->type_hd++;
+				if (cmd->magic_word)
+				{
+					tmp = cmd->magic_word;
+					cmd->magic_word = malloc(sizeof(char *) * ft_matrixlen(tmp) + 2);
+					y = -1;
+					k = ft_matrixlen(tmp);
+					while (++y < k)
+					{
+						cmd->magic_word[y] = cpy_with_malloc(tmp[y]);
+						free(tmp[y]);
+					}
+					cmd->magic_word[y] = cpy_with_malloc(cmd->all_cmds[x + 1]);
+					ft_putstr_fd("\n", 1);
+					free(tmp);
+				}
+				else
+				{
+					cmd->magic_word = malloc(sizeof(char *) * 2);
+					cmd->magic_word[0] = cpy_with_malloc(cmd->all_cmds[x + 1]);
+					cmd->magic_word[1] = NULL;
+				}
+			}
+		}
+		x += find_next_char(&cmd->all_cmds[x + 1], '<') + 1;
+	}
+}
 
 /****************************************
 *
@@ -88,6 +130,7 @@ t_datas_cmd	*gen_datas_cmd(char *x, t_datas_prompt *datas_prompt)
 	if (!cmd)
 		exit (0);
 	cmd->all_cmds = ft_split_up(x);
+	search_hd(cmd);
 	if (!cmd->all_cmds)
 	{
 		free(cmd);
@@ -99,7 +142,7 @@ t_datas_cmd	*gen_datas_cmd(char *x, t_datas_prompt *datas_prompt)
 		free(cmd);
 		return (NULL);
 	}
-	cmd->cmd_first = trans_cmd(cmd->all_cmds, datas_prompt, 0, NULL);
+	cmd->cmd_first = trans_cmd(cmd->all_cmds, cmd, 0, NULL);
 	if (!cmd->cmd_first)
 	{
 		ft_free_datas_cmd(cmd);

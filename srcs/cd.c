@@ -6,13 +6,13 @@
 /*   By: mbucci <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 12:48:22 by mbucci            #+#    #+#             */
-/*   Updated: 2022/02/19 16:01:51 by mbucci           ###   ########.fr       */
+/*   Updated: 2022/02/21 14:38:09 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_list_to_index(char *str, t_var_env *list);
+t_var_env	*ft_find_in_list(char *str, t_var_env *list);
 
 int	compare_paths(void)
 {
@@ -34,13 +34,9 @@ int	compare_paths(void)
 
 void	replace_pwd(void)
 {
-	int			i;
 	t_var_env	*ptr;
 
-	ptr = datas_prompt.env_in_struct;
-	i = ft_list_to_index("PWD", ptr);
-	while (--i > -1)
-		ptr = ptr->next;
+	ptr = ft_find_in_list("PWD", datas_prompt.env_in_struct);
 	free(ptr->var_txt);
 	ptr->var_txt = NULL;
 	ptr->var_txt = getcwd(NULL, 0);

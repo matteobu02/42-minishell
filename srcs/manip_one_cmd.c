@@ -12,35 +12,7 @@
 
 #include "minishell.h"
 
-void search_hd(t_one_cmd *cmd)
-{
-	int x;
 
-	x = 0;
-	cmd->type_hd = 0;
-	cmd->magic_word = NULL;
-	while (1)
-	{
-		x = find_next_char(&cmd->all_cmd[x], '<');
-		if (x < ft_matrixlen(&cmd->all_cmd[x]) + 1 && ft_strlen(cmd->all_cmd[x]) == 2)
-		{
-			if (cmd->all_cmd[x][1] == '<')
-			{
-				cmd->type_hd = 1;
-				cmd->magic_word = cpy_with_malloc(cmd->all_cmd[x + 1]);
-				if (!cmd->magic_word)
-				{
-					ft_free_one_cmd(cmd, 0);
-					cmd = NULL;
-					return ;
-				}
-				break;
-			}
-		}
-		else
-			break;
-	}
-}
 
 /****************************************
 *
@@ -61,7 +33,7 @@ void search_hd(t_one_cmd *cmd)
 *
 ****************************************/
 
-t_one_cmd	*trans_cmd(char **cmds, t_datas_prompt *datas_prompt, int st, t_one_cmd *old_one)
+t_one_cmd	*trans_cmd(char **cmds, t_datas_cmd	*data_command, int st, t_one_cmd *old_one)
 {
 	int			x;
 	t_one_cmd	*cmd;
@@ -69,8 +41,8 @@ t_one_cmd	*trans_cmd(char **cmds, t_datas_prompt *datas_prompt, int st, t_one_cm
 	char 		**envp;
 	t_var_env 	*out_struct;
 
-	envp = datas_prompt->envp;
-	out_struct = datas_prompt->out_struct;
+	envp = datas_prompt.envp;
+	out_struct = datas_prompt.out_struct;
 	cmds = pipen_t(cmds);
 	cmd = malloc(sizeof(t_one_cmd));
 	if (!cmd)
@@ -94,11 +66,10 @@ t_one_cmd	*trans_cmd(char **cmds, t_datas_prompt *datas_prompt, int st, t_one_cm
 		ft_free_one_cmd(cmd, 0);
 		return (NULL);
 	}
-	search_hd(cmd);
 	if (cmd == NULL)
 		return (NULL);
 	//on s'est arrete la
-	if (cmd->type_hd || ((cmd->infile != 0 || cmd->outfile != 1) && (find_next_char(cmd->all_cmd, '<') < find_next_char(cmds, '|') || find_next_char(cmd->all_cmd, '>') < find_next_char(cmds, '|'))))
+	if (data_command->type_hd || ((cmd->infile != 0 || cmd->outfile != 1) && (find_next_char(cmd->all_cmd, '<') < find_next_char(cmds, '|') || find_next_char(cmd->all_cmd, '>') < find_next_char(cmds, '|'))))
 	{
 		cmd->all_cmd = simple_mat(cmd->all_cmd);
 		if (!cmd->all_cmd)
@@ -110,7 +81,7 @@ t_one_cmd	*trans_cmd(char **cmds, t_datas_prompt *datas_prompt, int st, t_one_cm
 	x = find_next_char(cmds, '|');
 	if (!ft_matrixlen(cmd->all_cmd) && 	x != ft_matrixlen(cmds))
 	{
-		tmp = trans_cmd(&(cmds[x + 1]), datas_prompt, 0, cmd);
+		tmp = trans_cmd(&(cmds[x + 1]), data_command, 0, cmd);
 		ft_free_one_cmd(cmd, 1);
 		cmd = tmp;
 	}
@@ -124,7 +95,7 @@ t_one_cmd	*trans_cmd(char **cmds, t_datas_prompt *datas_prompt, int st, t_one_cm
 			cmd->type_next = 2;
 			if (st)
 				cmd->type_next = 1;
-			cmd->next = trans_cmd(&(cmds[x + 1]), datas_prompt, 1, NULL);
+			cmd->next = trans_cmd(&(cmds[x + 1]), data_command, 1, NULL);
 		}
 	}
 	return (cmd);

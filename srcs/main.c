@@ -157,6 +157,7 @@ int	main(int argc, char **argv, char **envp)
 	char			*prompt;
 	char			*test;
 	int				fd[2];
+	int x;
 
 	fd[0] = 6;
 	fd[1] = 6;
@@ -169,7 +170,8 @@ int	main(int argc, char **argv, char **envp)
 		test = readline(prompt);
 		if (test[0] && ft_allisspace(test) != -1)
 		{
-			if (ft_strchr(test, '=') && (ft_strchr(test, '"') == 0 || ft_strchr(test, '"') > ft_strchr(test, '=')))
+			x = ft_strchr_up(test, ' ');
+			if ((ft_strchr_up(test, '=') && (ft_strchr_up(test, '"') == 0 || ft_strchr_up(test, '"') > ft_strchr_up(test, '='))))
 			{
 				datas_prompt.out_struct = ft_new_var_env(test, datas_prompt.out_struct);
 				if (!datas_prompt.out_struct)
@@ -181,8 +183,8 @@ int	main(int argc, char **argv, char **envp)
 				if (datas_prompt.cmds)
 			//	print_test(datas_prompt);
 				{
-					if (datas_prompt.cmds->cmd_first->type_hd == 1)
-						ft_here_doc(datas_prompt.cmds, datas_prompt.cmds->cmd_first->magic_word);
+					if (datas_prompt.cmds->type_hd)
+						ft_here_doc(datas_prompt.cmds, datas_prompt.cmds->magic_word[0]);
 					pipe_rec(datas_prompt.cmds, datas_prompt.envp, fd, datas_prompt.cmds->cmd_first);
 					ft_free_datas_cmd(datas_prompt.cmds);
 				}

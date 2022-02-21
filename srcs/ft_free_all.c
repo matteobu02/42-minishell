@@ -66,8 +66,6 @@ void	ft_free_one_cmd(t_one_cmd *first_cmd, int status)
 			free(first_cmd->all_cmd[x]);
 	if (first_cmd->all_cmd)
 		free(first_cmd->all_cmd);
-	if (first_cmd->magic_word)
-		free(first_cmd->magic_word);
 	if (first_cmd->infile > 0 && !status)
 		close(first_cmd->infile);
 	if (first_cmd->outfile > 1 && !status)
@@ -99,6 +97,8 @@ void	ft_free_datas_cmd(t_datas_cmd *datas_cmd)
 			free(datas_cmd->all_cmds[x]);
 		free(datas_cmd->all_cmds);
 	}
+	if (datas_cmd->magic_word)
+		free(datas_cmd->magic_word);
 	if (datas_cmd->cmd_first)
 		ft_free_one_cmd(datas_cmd->cmd_first, 0);
 	if (datas_cmd)
