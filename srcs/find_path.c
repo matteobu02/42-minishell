@@ -6,7 +6,7 @@
 /*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 18:11:15 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/10 18:11:17 by hgoorick         ###   ########.fr       */
+/*   Updated: 2022/02/24 22:26:00 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,12 @@
 *
 ****************************************/
 
-char	*find_in_env(char **envp, char *word, int len_word, int len_return)
+char	*find_in_env(char **envp, char *word, int len_return)
 {
 	char	*path;
 	int		i;
 
 	i = -1;
-	len_word = 0;
 	while (ft_matrixlen(envp) > ++i)
 	{
 		if (!ft_strncmp(envp[i], word, ft_strchr_up(envp[i], '=')))

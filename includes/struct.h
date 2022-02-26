@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   struct.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/11 15:16:43 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/11 15:18:58 by hgoorick         ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   struct.h										   :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: hgoorick <marvin@42.fr>					+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2022/02/11 15:16:43 by hgoorick		  #+#	#+#			 */
+/*   Updated: 2022/02/25 07:40:39 by hgoorick         ###   ########.fr       */
+/*																			*/
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
@@ -22,23 +22,24 @@ typedef struct s_var_env		t_var_env;
 
 struct s_datas_prompt
 {
-	t_datas_cmd	*cmds;
-	char		*home;
-	char		**envp;
-	int			last_command_status;
-	char		*old_command;
-	t_var_env	*env_in_struct;
-	t_var_env	*out_struct;
+	t_datas_cmd		*cmds;
+	int				pid;
+	struct termios	old;
+	struct termios	new;
+	char			**envp;
+	int				last_command_status;
+	int				last_command_status_tmp;
+	t_var_env		*env_in_struct;
+	t_var_env		*out_struct;
 };
 
 struct s_datas_cmd
 {
 	char			**all_cmds;
 	int				nb_cmds;
-	int 		type_hd;
-	char 		**magic_word;
+	int				type_hd;
+	char			**magic_word;
 	t_one_cmd		*cmd_first;
-	t_datas_prompt	*datas_prompt;
 };
 
 struct s_fd
@@ -56,7 +57,7 @@ struct s_one_cmd
 	int			outfile;
 	int			type_next;
 	t_one_cmd	*next;
-	int 		fd;
+	int			fd;
 };
 
 struct s_var_env

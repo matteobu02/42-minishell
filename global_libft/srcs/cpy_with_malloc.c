@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize_up.c                                    :+:      :+:    :+:   */
+/*   cpy_with_malloc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/10 18:59:11 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/25 17:54:47 by mbucci           ###   ########.fr       */
+/*   Created: 2022/02/25 07:23:43 by hgoorick          #+#    #+#             */
+/*   Updated: 2022/02/25 07:23:46 by hgoorick         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,21 @@
 
 /****************************************
 *
-*	Nom : ft_lstsize_up
-*	Params : Pointeur vers la premiere struct de var env de la liste chainee
-*	Retour : Nombre d'elements dans la liste chainee
+*	Nom : cpy_with_malloc
+*	Params : La liste de char a copier
+*	Retour : La liste de char copiee
 *	Descritpion:
-*		Compte le nombre de strcut dans la liste chainee
+*		Copie une chaine avant de la retourner
 *
 ****************************************/
 
-int	ft_lstsize_up(t_var_env *lst)
+char	*cpy_with_malloc(char *tmp)
 {
-	if (!lst)
-		return (0);
-	if (lst->next == 0)
-		return (1);
-	return (1 + ft_lstsize_up(lst->next));
+	char	*out;
+
+	out = malloc(sizeof(char) * ft_strlen(tmp) + 1);
+	if (!out)
+		return (NULL);
+	ft_strlcpy(out, tmp, ft_strlen(tmp));
+	return (out);
 }

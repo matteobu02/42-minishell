@@ -31,14 +31,12 @@
 *
 ****************************************/
 
-t_one_cmd	*trans_cmd(char **cmds, t_datas_cmd *datas, int st, t_one_cmd *old)
+t_one_cmd	*trans_cmd1(char **cmds)
 {
-	int			x;
 	t_one_cmd	*cmd;
 	char		**envp;
 	t_var_env	*out_struct;
 
-	(void)old;
 	envp = datas_prompt.envp;
 	out_struct = datas_prompt.out_struct;
 	cmd = malloc(sizeof(t_one_cmd));
@@ -52,9 +50,35 @@ t_one_cmd	*trans_cmd(char **cmds, t_datas_cmd *datas, int st, t_one_cmd *old)
 		free(cmd);
 	cmd->infile = infile(cmd->all_cmd);
 	cmd->outfile = outfile(cmd->all_cmd);
-	if (cmd == NULL)
+	return (cmd);
+}
+
+t_one_cmd	*trans_cmd2(char **cmds, t_one_cmd *cmd, int st, t_datas_cmd *data)
+{
+	int	x;
+
+	x = find_next_char(cmds, '|');
+	cmd->cmd = cmd->all_cmd[0];
+	cmd->type_next = 0;
+	cmd->next = NULL;
+	if (x != ft_matrixlen(cmds))
+	{
+		cmd->type_next = 2;
+		if (st)
+			cmd->type_next = 1;
+		cmd->next = trans_cmd(&(cmds[x + 1]), 1, data);
+	}
+	return (cmd);
+}
+
+t_one_cmd	*trans_cmd(char **cmds, int st, t_datas_cmd	*data_command)
+{
+	t_one_cmd	*cmd;
+
+	cmd = trans_cmd1(cmds);
+	if (!cmd)
 		return (NULL);
-	if (datas->type_hd || ((cmd->infile != 0 || cmd->outfile != 1)
+	if (data_command->type_hd || ((cmd->infile != 0 || cmd->outfile != 1)
 			&& (find_next_char(cmd->all_cmd, '<') < find_next_char(cmds, '|')
 				|| find_next_char(cmd->all_cmd, '>') < \
 					find_next_char(cmds, '|'))))
@@ -66,16 +90,6 @@ t_one_cmd	*trans_cmd(char **cmds, t_datas_cmd *datas, int st, t_one_cmd *old)
 			return (NULL);
 		}
 	}
-	x = find_next_char(cmds, '|');
-	cmd->cmd = cmd->all_cmd[0];
-	cmd->type_next = 0;
-	cmd->next = NULL;
-	if (x != ft_matrixlen(cmds))
-	{
-		cmd->type_next = 2;
-		if (st)
-			cmd->type_next = 1;
-		cmd->next = trans_cmd(&(cmds[x + 1]), datas, 1, NULL);
-	}
+	cmd = trans_cmd2(cmds, cmd, st, data_command);
 	return (cmd);
 }

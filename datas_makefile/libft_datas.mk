@@ -82,3 +82,5 @@ SRC += ft_lstsize_up.c
 SRC += ft_strchr_up.c
 SRC += ft_allisspace.c
 SRC += ft_strjoin_up.c
+SRC += cpy_with_malloc.c
+SRC += ft_lstnb.c

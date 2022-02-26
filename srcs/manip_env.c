@@ -6,7 +6,7 @@
 /*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 18:43:32 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/10 18:43:33 by hgoorick         ###   ########.fr       */
+/*   Updated: 2022/02/25 18:00:15 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,35 @@ t_var_env	*conv_env(char **envp)
 		}
 	}
 	return (out_struct);
+}
+
+char	**conv_env_to_mat(void)
+{
+	char		**out_mat;
+	int			x;
+	int			i;
+	t_var_env	*tmp;
+
+	i = -1;
+	x = ft_lstsize_up(datas_prompt.env_in_struct);
+	out_mat = malloc(sizeof(char *) * (x + 1));
+	tmp = datas_prompt.env_in_struct;
+	out_mat[x] = NULL;
+	while (++i < x)
+	{
+		if (!tmp->var_txt)
+			out_mat[i] = (char *)malloc(ft_strlen(tmp->name_var) + 1);
+		else
+			out_mat[i] = malloc(ft_strlen(tmp->var_txt) \
+					+ ft_strlen(tmp->name_var) + 2);
+		ft_strlcpy(out_mat[i], tmp->name_var, ft_strlen(tmp->name_var));
+		if (tmp->var_txt)
+		{
+			ft_strlcpy(&out_mat[i][ft_strlen(tmp->name_var)], "=", 1);
+			ft_strlcpy(&out_mat[i][ft_strlen(tmp->name_var) + 1], tmp->var_txt, \
+			ft_strlen(tmp->var_txt));
+		}
+		tmp = tmp->next;
+	}
+	return (out_mat);
 }

@@ -6,7 +6,7 @@
 /*   By: mbucci <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 12:48:22 by mbucci            #+#    #+#             */
-/*   Updated: 2022/02/21 17:07:34 by mbucci           ###   ########.fr       */
+/*   Updated: 2022/02/23 16:17:36 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	compare_pwd(void)
 	char	*path;
 	char	*tmp;
 	int		ret;
-	
+
 	tmp = ft_getenv("PWD", datas_prompt.env_in_struct);
 	if (!tmp)
 		return (0);
@@ -53,7 +53,7 @@ void	replace_pwd(void)
 	datas_prompt.last_command_status = 0;
 }
 
-void	print_error(char *cmd, char *arg)
+void	cd_error(char *cmd, char *arg)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(cmd, STDERR_FILENO);
@@ -74,20 +74,20 @@ void	cd(int ac, char **av)
 	if (ac == 1)
 	{
 		if (!ft_getenv("HOME", datas_prompt.env_in_struct))
-			return (print_error("cd", "HOME not set\n"));
+			return (cd_error("cd", "HOME not set\n"));
 		else
 		{
 			ret = chdir(ft_getenv("HOME", datas_prompt.env_in_struct));
 			if (ret)
-				return (print_error("cd", 
-				ft_getenv("HOME", datas_prompt.env_in_struct)));
+				return (cd_error("cd", \
+					ft_getenv("HOME", datas_prompt.env_in_struct)));
 		}
 	}
 	else
 	{
 		ret = chdir(av[1]);
 		if (ret)
-			return (print_error("cd", av[1]));
+			return (cd_error("cd", av[1]));
 	}
 	if (compare_pwd())
 		replace_pwd();

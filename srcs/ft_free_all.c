@@ -56,7 +56,7 @@ void	ft_new_free(t_var_env *input)
 *
 ****************************************/
 
-void	ft_free_one_cmd(t_one_cmd *first_cmd, int status)
+void	*ft_free_one_cmd(t_one_cmd *first_cmd, int status)
 {
 	int	x;
 
@@ -74,6 +74,7 @@ void	ft_free_one_cmd(t_one_cmd *first_cmd, int status)
 		ft_free_one_cmd(first_cmd->next, 0);
 	if (first_cmd)
 		free(first_cmd);
+	return (NULL);
 }
 
 /****************************************
@@ -86,7 +87,7 @@ void	ft_free_one_cmd(t_one_cmd *first_cmd, int status)
 *
 ****************************************/
 
-void	ft_free_datas_cmd(t_datas_cmd *datas_cmd)
+void	*ft_free_datas_cmd(t_datas_cmd *datas_cmd)
 {
 	int	x;
 
@@ -98,9 +99,45 @@ void	ft_free_datas_cmd(t_datas_cmd *datas_cmd)
 		free(datas_cmd->all_cmds);
 	}
 	if (datas_cmd->magic_word)
+	{
+		x = datas_cmd->type_hd;
+		while (--x >= 0)
+			free(datas_cmd->magic_word[x]);
 		free(datas_cmd->magic_word);
+	}
 	if (datas_cmd->cmd_first)
 		ft_free_one_cmd(datas_cmd->cmd_first, 0);
 	if (datas_cmd)
 		free(datas_cmd);
+	return (NULL);
+}
+
+/****************************************
+*
+*	Nom : ft_free_little_matrice
+*	Params : - Matrice de 3 liste de char
+*			 - L'index qui ne doit pas etre free
+*	Retour : Void
+*	Descritpion:
+*		Free les trois index de la matrice sauf si le nombre donne est compris
+*			entre 0 et 2, dans ce cas l'index egal au nombre ne sera pas free
+*
+****************************************/
+
+char	*ft_free_little_matrice(char **mat, int x)
+{
+	int	y;
+
+	y = -1;
+	while (++y < 3)
+		if (y != x)
+			free(mat[y]);
+	return (NULL);
+}
+
+t_datas_cmd	*ft_free_no_place(t_datas_cmd *cmd)
+{
+	ft_clean_mat(cmd->all_cmds);
+	free(cmd);
+	return (NULL);
 }

@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_lstnb.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbucci <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/25 15:22:12 by mbucci            #+#    #+#             */
-/*   Updated: 2022/02/22 11:25:29 by mbucci           ###   ########.fr       */
+/*   Created: 2022/02/25 09:54:57 by hgoorick          #+#    #+#             */
+/*   Updated: 2022/02/25 09:55:00 by hgoorick         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	pwd(void)
+t_one_cmd	*ft_lstnb(t_one_cmd *cmd_first, int nb)
 {
-	char	*path;
+	t_one_cmd	*tmp;
 
-	path = NULL;
-	path = getcwd(path, 0);
-	datas_prompt.last_command_status = 0;
-	ft_putendl_fd(path, 1);
-	free(path);
-	path = NULL;
+	tmp = cmd_first;
+	while (--nb > 0)
+		tmp = tmp->next;
+	return (tmp);
 }

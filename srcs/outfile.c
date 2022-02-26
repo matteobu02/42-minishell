@@ -6,7 +6,7 @@
 /*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 18:05:17 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/10 18:05:19 by hgoorick         ###   ########.fr       */
+/*   Updated: 2022/02/24 22:28:20 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,8 @@
 
 int	open_fd(char *cmd, int stat)
 {
-	char	*str;
-	int		fd;
+	int	fd;
 
-	str = NULL;
 	fd = 0;
 	if (stat)
 		fd = open(cmd, O_CREAT | O_RDWR | O_APPEND, 0644);

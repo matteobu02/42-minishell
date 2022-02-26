@@ -14,14 +14,14 @@
 
 -include datas_makefile/srcs.mk
 
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -I/Users/$(USER)/.brew/opt/readline/include
 
 all:  global_libft_init creat_dir print ${NAME}
 
 -include datas_makefile/manip_global_libft.mk
 
 ${NAME}:    ${OBJS}
-	@gcc ${CFLAGS} -I/usr/include/readline -lreadline -I ${INCLUDES} ${LIBFT} ${OBJS} -o $@
+	@gcc ${CFLAGS} -lreadline -I ${INCLUDES} ${LIBFT} ${OBJS} -o $@ -L/Users/$(USER)/.brew/opt/readline/lib
 	@printf "${START_FIRST}${BLUE}%-30s${DEFAULT}\t\t[${GREEN} OK ${DEFAULT}]%40s\n" "Compile" ""
 
 ${OBJ_DIR}/%.o:${SRC_DIR}/%.c

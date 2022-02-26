@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_free_all2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbucci <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/25 15:22:12 by mbucci            #+#    #+#             */
-/*   Updated: 2022/02/22 11:25:29 by mbucci           ###   ########.fr       */
+/*   Created: 2022/02/25 10:05:28 by hgoorick          #+#    #+#             */
+/*   Updated: 2022/02/25 10:05:31 by hgoorick         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pwd(void)
+char	**free_no_place(int y, char **magic_word, char **tmp)
 {
-	char	*path;
-
-	path = NULL;
-	path = getcwd(path, 0);
-	datas_prompt.last_command_status = 0;
-	ft_putendl_fd(path, 1);
-	free(path);
-	path = NULL;
+	while (--y >= 0)
+		free(magic_word[y]);
+	free(magic_word);
+	ft_clean_mat(tmp);
+	return (NULL);
 }

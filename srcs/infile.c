@@ -6,7 +6,7 @@
 /*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 18:34:26 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/10 18:34:38 by hgoorick         ###   ########.fr       */
+/*   Updated: 2022/02/24 22:27:46 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,8 @@
 
 int	open_fd_infile(char *cmd)
 {
-	char	*str;
-	int		fd;
+	int	fd;
 
-	str = NULL;
 	fd = open(cmd, O_RDONLY);
 	if (fd <= 0)
 		return (-1);
