@@ -13,14 +13,14 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
-typedef struct s_datas_prompt	t_datas_prompt;
+typedef struct s_datas			t_datas;
 typedef struct s_datas_cmd		t_datas_cmd;
 typedef struct s_fd				t_fd;
 typedef struct s_list			t_list;
 typedef struct s_one_cmd		t_one_cmd;
 typedef struct s_var_env		t_var_env;
 
-struct s_datas_prompt
+struct s_datas
 {
 	t_datas_cmd		*cmds;
 	int				pid;

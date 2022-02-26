@@ -18,7 +18,7 @@ void	pwd(void)
 
 	path = NULL;
 	path = getcwd(path, 0);
-	datas_prompt.last_command_status = 0;
+	g_datas.last_command_status = 0;
 	ft_putendl_fd(path, 1);
 	free(path);
 	path = NULL;

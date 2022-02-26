@@ -6,7 +6,7 @@
 /*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 09:58:09 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/25 09:58:13 by hgoorick         ###   ########.fr       */
+/*   Updated: 2022/02/26 12:51:24 by lbuccher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@
 *
 ****************************************/
 
-char	*return_char1(char *cmd, char **envp, t_var_env *out_struct)
+char	*return_char1(char *cmd, t_var_env *out_struct)
 {
 	char	*tmp;
 
-	tmp = find_in_env(envp, cmd, ft_strlen_up(cmd, " \"") + 1);
+	tmp = find_in_struct(cmd, g_datas.env_in_struct);
 	if (tmp == NULL)
 	{
 		tmp = find_in_struct(cmd, out_struct);
@@ -63,13 +63,13 @@ char	*return_char3(char *cmd, int y)
 	char	*tmp;
 
 	tmp = ft_calloc(sizeof(char), ft_strlen(&cmd[y + \
-		ft_strlen_up(&cmd[y + 1], " \"")]));
+		ft_strlen_up(&cmd[y + 1], " \"\'$")]));
 	if (!tmp)
 	{
 		return (NULL);
 	}
-	ft_strlcpy(tmp, &cmd[y + 1 + ft_strlen_up(&cmd[y + 1], " \"")], \
-		ft_strlen(&cmd[y + ft_strlen_up(&cmd[y + 1], " \"")]));
+	ft_strlcpy(tmp, &cmd[y + 1 + ft_strlen_up(&cmd[y + 1], " \"\'$")], \
+		ft_strlen(&cmd[y + ft_strlen_up(&cmd[y + 1], " \"\'$")]));
 	return (tmp);
 }
 
@@ -97,14 +97,14 @@ char	*return_char4(char *cmds, int y, char **tmp)
 	return (out);
 }
 
-char	*return_char(char *cmds, int y, char **envp, t_var_env *out_struct)
+char	*return_char(char *cmds, int y, t_var_env *out_struct)
 {
 	char	**tmp;
 
 	tmp = malloc(sizeof(char *) * 3);
 	if (!tmp)
-		exit (0);
-	tmp[0] = return_char1(&cmds[y + 1], envp, out_struct);
+		return (NULL);
+	tmp[0] = return_char1(&cmds[y + 1], out_struct);
 	if (!tmp[0])
 	{
 		free(tmp);

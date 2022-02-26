@@ -19,11 +19,11 @@ int	er(char *str, int error, int status)
 		ft_putstr_fd("Minishell: ", 1);
 		ft_putstr_fd(str, 1);
 		ft_putstr_fd(": No such file or directory\n", 1);
-		datas_prompt.last_command_status = error;
+		g_datas.last_command_status = error;
 		return (1);
 	}
 	ft_putstr_fd(str, 1);
-	datas_prompt.last_command_status = error;
+	g_datas.last_command_status = error;
 	return (1);
 }
 
@@ -62,7 +62,7 @@ int	check_map2(char **map)
 			if (map[x][y] == 39 && !(count_double % 2))
 					count_simple++;
 		}
-		if (count_simple % 2 && count_double % 2)
+		if (count_simple % 2 || count_double % 2)
 			return (er("Minishell: error at the end of command\n", 1, 0));
 	}
 	return (0);
@@ -80,9 +80,7 @@ int	check_map(char **map)
 		return (er("Minishell: error at the end of command\n", 1, 0));
 	else if (infile(map) < 0 || outfile(map) < 0)
 		return (er(map[find_next_char(map, '<') + 1], 1, 1));
-	else
-		return (check_map2(map));
-	return (0);
+	return (check_map2(map));
 }
 
 char	**one_word(t_datas_cmd *cmd, int x)

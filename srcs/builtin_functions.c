@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   builtin_functions.c                                :+:      :+:    :+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: mbucci <marvin@42.fr>					  +#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2022/01/26 14:49:11 by mbucci			#+#	#+#			 */
-/*   Updated: 2022/02/26 03:08:26 by mbucci           ###   ########.fr       */
-/*																			*/
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbucci <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/26 01:35:10 by mbucci            #+#    #+#             */
+/*   Updated: 2022/02/26 02:32:51 by mbucci           ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -56,7 +56,7 @@ int	ft_exit_all(void)
 	char	**tmp;
 	int		i;
 
-	tmp = datas_prompt.cmds->cmd_first->all_cmd;
+	tmp = g_datas.cmds->cmd_first->all_cmd;
 	if (ft_matrixlen(tmp) > 1)
 	{
 		i = -1;
@@ -81,24 +81,14 @@ int	ft_exit_all(void)
 
 void	ft_exit(void)
 {
-	//char	**tmp;
 	int	val_return;
 
-	/*tmp = malloc(sizeof(char *) * 3);
-	 if (tmp)
-	 {
-	 tmp[0] = "rm";
-	 tmp[1] = "-f";
-	 tmp[2] = "tmp";
-	 execve("/bin/rm", tmp, datas_prompt.envp);
-	 free(tmp);
-	 }*/
 	ft_putstr_fd("exit\n", 1);
 	val_return = ft_exit_all();
-	ft_free_datas_cmd(datas_prompt.cmds);
-	ft_new_free(datas_prompt.env_in_struct);
-	if (datas_prompt.out_struct)
-		ft_new_free(datas_prompt.out_struct);
-	tcsetattr(0, TCSANOW, &datas_prompt.new);
+	ft_free_datas_cmd(g_datas.cmds);
+	ft_new_free(g_datas.env_in_struct);
+	if (g_datas.out_struct)
+		ft_new_free(g_datas.out_struct);
+	tcsetattr(0, TCSANOW, &g_datas.new);
 	exit (val_return);
 }

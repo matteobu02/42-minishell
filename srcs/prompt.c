@@ -26,7 +26,7 @@ char	*start_prompt1(char *output, char *tmp1)
 {
 	char	*tmp;
 
-	if (!datas_prompt.last_command_status)
+	if (!g_datas.last_command_status)
 		tmp = ft_strjoin(output, " \033[0;92m>\033[0;39m ");
 	else
 		tmp = ft_strjoin(output, " \033[0;91m>\033[0;39m ");

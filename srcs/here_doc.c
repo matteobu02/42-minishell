@@ -6,7 +6,7 @@
 /*   By: lbuccher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 12:07:00 by lbuccher          #+#    #+#             */
-/*   Updated: 2022/02/16 12:07:03 by lbuccher         ###   ########.fr       */
+/*   Updated: 2022/02/26 01:33:43 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,17 @@ void	get_here_doc(char *join, char **end_word, int here_fd)
 	char	*here_doc;
 
 	i = 0;
-	end_word = datas_prompt.cmds->magic_word;
+	end_word = g_datas.cmds->magic_word;
 	while (1)
 	{
 		ft_putstr_fd("heredoc>", 1);
 		here_doc = get_next_line(1);
 		if (here_doc && (ft_strlen(end_word[i]) == ft_strlen(here_doc) - 1)
 			&& !ft_strncmp(here_doc, end_word[i], ft_strlen(end_word[i])))
-				i++;
+			i++;
 		else
 			i = 0;
-		if (i == datas_prompt.cmds->type_hd)
+		if (i == g_datas.cmds->type_hd)
 			break ;
 		join = ft_strjoin_up(join, here_doc);
 		free(here_doc);
@@ -92,7 +92,7 @@ void	get_here_doc(char *join, char **end_word, int here_fd)
 			return ;
 		}
 	}
-	ft_here_doc2(datas_prompt.cmds, here_doc, join, here_fd);
+	ft_here_doc2(g_datas.cmds, here_doc, join, here_fd);
 }
 
 void	ft_here_doc(char **end_word)

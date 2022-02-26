@@ -50,5 +50,5 @@ void	echo(int ac, char **av)
 		if (!flag)
 			ft_putchar_fd('\n', 1);
 	}
-	datas_prompt.last_command_status = 0;
+	g_datas.last_command_status = 0;
 }

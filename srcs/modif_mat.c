@@ -60,7 +60,7 @@ char	*find_in_struct(char *var_env, t_var_env *out)
 *
 ****************************************/
 
-char	*modif_mat2(char *cmd, int y, char **envp, t_var_env *out_struct)
+char	*modif_mat2(char *cmd, int y, t_var_env *out_struct)
 {
 	char	*tmp;
 	char	*tmp1;
@@ -69,7 +69,7 @@ char	*modif_mat2(char *cmd, int y, char **envp, t_var_env *out_struct)
 	{
 		if (y <= (int)ft_strlen(cmd) - 1 && cmd[y + 1] == '?')
 		{
-			tmp1 = ft_itoa(datas_prompt.last_command_status);
+			tmp1 = ft_itoa(g_datas.last_command_status);
 			tmp = ft_calloc(ft_strlen(cmd) - 2 + ft_strlen(tmp1), \
 				sizeof(char));
 			ft_strlcpy(tmp, cmd, y);
@@ -80,7 +80,7 @@ char	*modif_mat2(char *cmd, int y, char **envp, t_var_env *out_struct)
 			cmd = tmp;
 		}
 		else if ((y > 0 && cmd[0] == '"') || (y == 0))
-			cmd = return_char(cmd, y, envp, out_struct);
+			cmd = return_char(cmd, y, out_struct);
 	}
 	return (cmd);
 }
@@ -138,7 +138,7 @@ char	*modif_mat3(char *cmd, int *y, int *stat_simple, int *stat_double)
 	return (cmd);
 }
 
-char	**modif_mat(char **cmds, char **envp, t_var_env *out_struct)
+char	**modif_mat(char **cmds, t_var_env *out_struct)
 {
 	int		x;
 	int		y;
@@ -153,7 +153,7 @@ char	**modif_mat(char **cmds, char **envp, t_var_env *out_struct)
 		stat_double = 0;
 		while (++y < (int)ft_strlen(cmds[x]))
 		{
-			cmds[x] = modif_mat2(cmds[x], y, envp, out_struct);
+			cmds[x] = modif_mat2(cmds[x], y, out_struct);
 			cmds[x] = modif_mat3(cmds[x], &y, &stat_simple, &stat_double);
 		}
 	}

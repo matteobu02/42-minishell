@@ -37,15 +37,15 @@ t_one_cmd	*trans_cmd1(char **cmds)
 	char		**envp;
 	t_var_env	*out_struct;
 
-	envp = datas_prompt.envp;
-	out_struct = datas_prompt.out_struct;
+	envp = g_datas.envp;
+	out_struct = g_datas.out_struct;
 	cmd = malloc(sizeof(t_one_cmd));
 	if (!cmd)
 		return (NULL);
 	cmd->all_cmd = ft_matrixlcpy(cmds, find_next_char(cmds, '|'));
 	if (!cmd->all_cmd)
 		free(cmd);
-	cmd->all_cmd = modif_mat(cmd->all_cmd, envp, out_struct);
+	cmd->all_cmd = modif_mat(cmd->all_cmd, out_struct);
 	if (!cmd->all_cmd)
 		free(cmd);
 	cmd->infile = infile(cmd->all_cmd);

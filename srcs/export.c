@@ -71,12 +71,12 @@ int	check_arg(char *s, int *ptr)
 			|| s[i] == '$' || s[i] == '\'' || s[i] == ';' || s[i] == '&'
 			|| s[i] == '\"' || s[i] == '|' || s[i] == '^' || s[i] == '~'
 			|| s[i] == '*' || s[i] == '#' || s[i] == '@' || s[i] == '!'
-			|| !ft_isascii(s))
+			|| !ft_isascii(s[i]))
 		{
-			ft_putstr_fd("minishell: export: `", stderr_fileno);
-			ft_putstr_fd(s, stderr_fileno);
-			ft_putstr_fd("': ", stderr_fileno);
-			ft_putendl_fd("not a valid identifier", stderr_fileno);
+			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+			ft_putstr_fd(s, STDERR_FILENO);
+			ft_putstr_fd("': ", STDERR_FILENO);
+			ft_putendl_fd("not a valid identifier", STDERR_FILENO);
 			*ptr = 1;
 			return (1);
 		}
@@ -91,7 +91,7 @@ void	ft_export(int ac, char **av)
 
 	status = 0;
 	if (ac == 1)
-		export_print(datas_prompt.envp);
+		export_print(g_datas.envp);
 	else
 	{
 		i = 0;
@@ -104,5 +104,5 @@ void	ft_export(int ac, char **av)
 		}
 	}
 	update_env();
-	datas_prompt.last_command_status = status;
+	g_datas.last_command_status = status;
 }

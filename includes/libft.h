@@ -16,8 +16,6 @@
 # include "includes.h"
 # include "struct.h"
 
-t_datas_prompt	datas_prompt;
-
 t_one_cmd	*ft_lstnb(t_one_cmd *cmd_first, int nb);
 
 int			find_next_char(char **all_cmds, char c);

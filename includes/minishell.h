@@ -6,7 +6,7 @@
 /*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 15:12:14 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/26 03:06:46 by mbucci           ###   ########.fr       */
+/*   Updated: 2022/02/26 02:34:41 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 # include "libft.h"
 
-# define INPUT "######################################################\n\
+t_datas	g_datas;
+
+# define INPUT "\033[2J######################################################\n\
 #     __  ____       _      __         ____          #\n\
 #    /  |/  (_)___  (_)____/ /_  ___  / / /          #\n\
 #   / /|_/ / / __ \\/ / ___/ __ \\/ _ \\/ / /           #\n\
@@ -46,6 +48,7 @@ void		cd(int ac, char **av);
 void		echo(int ac, char **av);
 void		env(void);
 void		pwd(void);
+void		ft_export(int ac, char **av);
 void		unset(int ac, char **av);
 void		ft_exit(void);
 void		ft_clean_mat(char **mat);
@@ -55,6 +58,7 @@ void		ft_redirection(int fd_in, int fd_out, int simple, int first);
 void		multi_pipe(t_datas_cmd *cmds, int n_fd[2], int pr_fd[2], \
 	t_one_cmd *cmd);
 void		clean_mat_and_exit(char **paths);
+void		update_env(void);
 
 int			ft_strchr_up(const char *str, int to_find);
 int			ft_strlen_up(char *str, char *search);
@@ -70,6 +74,7 @@ int			search_forget(char *map, char forget);
 int			check_map2(char **map);
 int			check_map(char **map);
 int			no_path(char **paths, char **cmd, t_one_cmd *c_stru, int to_ex);
+int			add_to_env(char *s);
 
 char		*find_in_env(char **envp, char *word, int len_return);
 char		*find_in_struct(char *var_env, t_var_env *out);
@@ -77,8 +82,7 @@ char		*start_prompt(char **env);
 char		*cpy_with_malloc(char *tmp);
 char		*ft_getenv(char *var_name, t_var_env *list);
 char		*ft_free_little_matrice(char **mat, int x);
-char		*return_char(char *cmds, int y, char **envp, \
-	t_var_env *out_struct);
+char		*return_char(char *cmds, int y, t_var_env *out_struct);
 char		*find_cmd_path(char **paths, t_one_cmd *c_stru, char **cmd);
 
 char		**ft_first_cmd(char **all_cmds);
@@ -87,14 +91,14 @@ char		**one_word(t_datas_cmd *cmd, int x);
 char		**conv_env_to_mat(void);
 char		**get_path(char *env[]);
 char		**pipen_t(char **cmds);
-char		**modif_mat(char **cmds, char **envp, t_var_env *out_struct);
+char		**modif_mat(char **cmds, t_var_env *out_struct);
 char		**simple_mat(char **start_mat);
 char		**conv_env_to_mat(void);
 char		**ft_cpy_maic_word(t_datas_cmd *cmd, int x, int status);
 
 t_datas_cmd	*gen_datas_cmd(char *x);
 t_datas_cmd	*ft_free_no_place(t_datas_cmd *cmd);
-t_datas_cmd	*ft_parsing(char *cmd_one_line, t_datas_prompt *datas_prompt);
+t_datas_cmd	*ft_parsing(char *cmd_one_line, t_datas *datas_prompt);
 
 t_one_cmd	*trans_cmd(char **cmds, int st, t_datas_cmd	*data_command);
 t_one_cmd	*move_fd(t_one_cmd *cmd_first, int nb_escape, t_datas_cmd *all);

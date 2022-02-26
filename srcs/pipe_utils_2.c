@@ -6,7 +6,7 @@
 /*   By: lbuccher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 12:13:45 by lbuccher          #+#    #+#             */
-/*   Updated: 2022/02/25 12:13:52 by lbuccher         ###   ########.fr       */
+/*   Updated: 2022/02/26 02:10:27 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -18,12 +18,12 @@ int	no_path(char **paths, char **cmd, t_one_cmd *c_stru, int to_ex)
 		if (access(c_stru->cmd, F_OK) == 0)
 		{
 			ft_clean_mat(paths);
-			execve(c_stru->cmd, cmd, datas_prompt.envp);
+			execve(c_stru->cmd, cmd, g_datas.envp);
 		}
 		else if (!check_builtin(c_stru))
 		{
 			perror_cnf("command not found: ", cmd[0], 2);
-			datas_prompt.last_command_status = 127;
+			g_datas.last_command_status = 127;
 			exit (127);
 		}
 		return (1);
@@ -66,20 +66,24 @@ void	ft_redirection(int fd_in, int fd_out, int simple, int first)
 	{
 		close(fd_in);
 		if (dup2(fd_out, 1) < 0)
-			return (perror("first: fd"));
+			return (perror("fd"));
 		close(fd_out);
 	}
 	else if (simple == 1 && first == 0)
 	{
 		close(fd_out);
 		if (dup2(fd_in, 0) < 0)
-			return (perror("last: fd"));
+			return (perror("fd"));
 		close(fd_in);
 	}
 	else
 	{
 		if (dup2(fd_out, 1) < 0 || dup2(fd_in, 0) < 0)
-			return (perror("middle: fd"));
+		{
+			ft_putnbr_fd(fd_out, 1);
+			ft_putnbr_fd(fd_in, 1);
+			return (perror("fd"));
+		}
 		close(fd_out);
 		close(fd_in);
 	}

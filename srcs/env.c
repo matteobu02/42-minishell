@@ -30,8 +30,8 @@ void	env(void)
 	int	i;
 
 	i = -1;
-	while (datas_prompt.envp[++i])
-		if (ft_strchr(datas_prompt.envp[i], '='))
-			ft_putendl_fd(datas_prompt.envp[i], 1);
-	datas_prompt.last_command_status = 0;
+	while (g_datas.envp[++i])
+		if (ft_strchr(g_datas.envp[i], '='))
+			ft_putendl_fd(g_datas.envp[i], 1);
+	g_datas.last_command_status = 0;
 }

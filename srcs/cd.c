@@ -27,7 +27,7 @@ int	compare_pwd(void)
 	char	*tmp;
 	int		ret;
 
-	tmp = ft_getenv("PWD", datas_prompt.env_in_struct);
+	tmp = ft_getenv("PWD", g_datas.env_in_struct);
 	if (!tmp)
 		return (0);
 	path = NULL;
@@ -44,13 +44,13 @@ void	replace_pwd(void)
 {
 	t_var_env	*ptr;
 
-	ptr = ft_find_in_list("PWD", datas_prompt.env_in_struct);
+	ptr = ft_find_in_list("PWD", g_datas.env_in_struct);
 	free(ptr->var_txt);
 	ptr->var_txt = NULL;
 	ptr->var_txt = getcwd(NULL, 0);
-	ft_clean_mat(datas_prompt.envp);
-	datas_prompt.envp = conv_env_to_mat();
-	datas_prompt.last_command_status = 0;
+	ft_clean_mat(g_datas.envp);
+	g_datas.envp = conv_env_to_mat();
+	g_datas.last_command_status = 0;
 }
 
 void	cd_error(char *cmd, char *arg)
@@ -64,7 +64,7 @@ void	cd_error(char *cmd, char *arg)
 		ft_putstr_fd(": ", STDERR_FILENO);
 		perror(NULL);
 	}
-	datas_prompt.last_command_status = 1;
+	g_datas.last_command_status = 1;
 }
 
 void	cd(int ac, char **av)
@@ -73,14 +73,14 @@ void	cd(int ac, char **av)
 
 	if (ac == 1)
 	{
-		if (!ft_getenv("HOME", datas_prompt.env_in_struct))
+		if (!ft_getenv("HOME", g_datas.env_in_struct))
 			return (cd_error("cd", "HOME not set\n"));
 		else
 		{
-			ret = chdir(ft_getenv("HOME", datas_prompt.env_in_struct));
+			ret = chdir(ft_getenv("HOME", g_datas.env_in_struct));
 			if (ret)
 				return (cd_error("cd", \
-					ft_getenv("HOME", datas_prompt.env_in_struct)));
+					ft_getenv("HOME", g_datas.env_in_struct)));
 		}
 	}
 	else
