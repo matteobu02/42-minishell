@@ -6,7 +6,7 @@
 /*   By: hgoorick <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 18:35:02 by hgoorick          #+#    #+#             */
-/*   Updated: 2022/02/10 18:35:05 by hgoorick         ###   ########.fr       */
+/*   Updated: 2022/03/03 12:40:14 by mbucci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@
 t_one_cmd	*trans_cmd1(char **cmds)
 {
 	t_one_cmd	*cmd;
-	char		**envp;
 	t_var_env	*out_struct;
 
-	envp = g_datas.envp;
 	out_struct = g_datas.out_struct;
 	cmd = malloc(sizeof(t_one_cmd));
 	if (!cmd)
